@@ -45,7 +45,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/layout_movie_item" />
+            <include
+                android:id="@+id/one"
+                layout="@layout/layout_movie_item" />
 
             <include layout="@layout/layout_movie_item" />
 

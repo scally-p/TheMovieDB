@@ -14,7 +14,7 @@
         android:id="@+id/mainContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimaryLight"
         android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/posterLayout"
         app:layout_constraintTop_toTopOf="@+id/posterLayout">
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="The Amazing Maurice"
             android:textColor="@color/white"
-            android:textSize="16dp"
+            android:textSize="15dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,9 +36,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Action / Comedy / Family"
+            android:text="Action | Comedy | Family"
             android:textColor="@color/white"
-            android:textSize="13dp"
+            android:textSize="11dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:text="Released on 12.01.2022"
             android:textColor="@color/white"
-            android:textSize="10dp"
+            android:textSize="9dp"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/genre" />
 
@@ -72,7 +72,7 @@
             android:layout_marginStart="8dp"
             android:text="8.4 | 5 reviews"
             android:textColor="@color/white"
-            android:textSize="10dp"
+            android:textSize="9dp"
             android:textStyle="bold|italic"
             app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
             app:layout_constraintStart_toEndOf="@+id/ratingBar"
@@ -89,11 +89,11 @@
 
         <ImageView
             android:id="@+id/poster"
-            android:layout_width="110dp"
-            android:layout_height="140dp"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
             android:background="#444444"
             android:scaleType="centerCrop"
-            android:src="@drawable/poster"
+            android:src="@drawable/pic_poster1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

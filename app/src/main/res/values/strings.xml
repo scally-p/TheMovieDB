@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TheMovieDB</string>
+
+    <string name="lorem_ipsium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nisl nisl, eleifend bibendum eleifend sagittis, commodo in enim. Integer ornare nec libero sed cursus. Praesent ultricies ac erat sit amet maximus. Quisque consequat enim eget arcu malesuada maximus. Phasellus semper maximus vestibulum. Vivamus nec odio eget tortor rhoncus tincidunt. Ut auctor eu est non posuere. Curabitur risus justo, malesuada a lorem vel, pharetra varius urna.
+    </string>
+
 </resources>

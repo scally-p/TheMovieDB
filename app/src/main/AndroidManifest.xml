@@ -12,12 +12,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.TheMovieDB.Launcher"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
-            android:icon="@drawable/img_the_movie_db_primary_full"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +29,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".DetailsActivity" />
     </application>
 
 </manifest>
