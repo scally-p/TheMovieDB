@@ -75,5 +75,24 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="aaaaaa">#aaaaaa</color>
+    <color name="bbbbbb">#bbbbbb</color>
+    <color name="cccccc">#cccccc</color>
+    <color name="dddddd">#dddddd</color>
+    <color name="eeeeee">#eeeeee</color>
+    <color name="d8d8d8">#d8d8d8</color>
+    <color name="f2f2f2">#f2f2f2</color>
+    <color name="f5f5f5">#f5f5f5</color>
+    <color name="f9f9f9">#f9f9f9</color>
+    <color name="fafafa">#fafafa</color>
+    <color name="ones">#111111</color>
+    <color name="twos">#222222</color>
+    <color name="threes">#333333</color>
+    <color name="fours">#444444</color>
+    <color name="fives">#555555</color>
+    <color name="sixs">#666666</color>
+    <color name="sevens">#777777</color>
+    <color name="eights">#888888</color>
+    <color name="nines">#999999</color>
 
 </resources>

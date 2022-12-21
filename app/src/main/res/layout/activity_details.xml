@@ -8,6 +8,7 @@
         android:id="@+id/backdrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:scaleType="centerCrop"
         android:src="@drawable/pic_backdrop" />
 
@@ -188,7 +189,7 @@
                         android:layout_height="300dp"
                         android:layout_marginTop="30dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/pic_poster2"
+                        android:src="@drawable/pic_poster1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/duration" />
@@ -258,7 +259,7 @@
             android:background="#444444"
             android:elevation="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/pic_poster1"
+            android:src="@drawable/pic_poster2"
             app:layout_anchor="@+id/appBarLayout"
             app:layout_anchorGravity="start|bottom" />
 

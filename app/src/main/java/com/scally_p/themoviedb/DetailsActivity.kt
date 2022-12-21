@@ -35,6 +35,9 @@ class DetailsActivity : AppCompatActivity(), OnClickListener {
                 binding.poster1.isVisible = true
             }
         }
+
+        binding.poster2.transitionName = "poster_transition"
+
     }
 
     override fun onClick(p0: View?) {

@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-
     <style name="Theme.TheMovieDB.Launcher" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/colorPrimary</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/img_the_movie_db_primary_full</item>
@@ -26,6 +25,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="Theme.RatingBar" parent="Theme.MaterialComponents.DayNight">
