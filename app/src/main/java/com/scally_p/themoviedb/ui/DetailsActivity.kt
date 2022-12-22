@@ -1,10 +1,11 @@
-package com.scally_p.themoviedb
+package com.scally_p.themoviedb.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.core.view.isVisible
+import com.scally_p.themoviedb.R
 import com.scally_p.themoviedb.databinding.ActivityDetailsBinding
 import kotlin.math.abs
 

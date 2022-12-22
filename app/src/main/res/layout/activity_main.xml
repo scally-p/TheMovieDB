@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -34,10 +34,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.core.widget.NestedScrollView
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:duration="800"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
@@ -45,22 +46,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/one"
-                layout="@layout/layout_movie_item" />
+            <include layout="@layout/layout_movie_item_shimmer" />
 
-            <include layout="@layout/layout_movie_item" />
+            <include layout="@layout/layout_movie_item_shimmer" />
 
-            <include layout="@layout/layout_movie_item" />
+            <include layout="@layout/layout_movie_item_shimmer" />
 
-            <include layout="@layout/layout_movie_item" />
+            <include layout="@layout/layout_movie_item_shimmer" />
 
-            <include layout="@layout/layout_movie_item" />
+            <include layout="@layout/layout_movie_item_shimmer" />
 
-            <include layout="@layout/layout_movie_item" />
-
-            <include layout="@layout/layout_movie_item" />
+            <include layout="@layout/layout_movie_item_shimmer" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
