@@ -1,12 +1,14 @@
 package com.scally_p.themoviedb.data.local.db
 
-class MoviesDbHelper {
+import com.scally_p.themoviedb.data.model.Genre
+
+class GenresDbHelper {
 
     @Synchronized
-    fun getMovies(): List<com.scally_p.themoviedb.data.model.Result> {
+    fun getGenres(): List<Genre> {
         return RealmConfig.getRealm()
             .use {
-                val data = it.where(com.scally_p.themoviedb.data.model.Result::class.java).findAll()
+                val data = it.where(Genre::class.java).findAll()
 
                 if (data != null && data.isValid) {
                     it.copyFromRealm(data)
@@ -17,7 +19,7 @@ class MoviesDbHelper {
     }
 
     @Synchronized
-    fun saveMovies(results: List<com.scally_p.themoviedb.data.model.Result>) {
+    fun saveGenres(results: List<Genre>) {
         RealmConfig.getRealm()
             .use {
                 it.executeTransaction { realm ->
@@ -27,12 +29,12 @@ class MoviesDbHelper {
     }
 
     @Synchronized
-    fun deleteMovies(): Boolean {
+    fun deleteGenres(): Boolean {
         return try {
             RealmConfig.getRealm()
                 .use {
                     it.executeTransaction { realm ->
-                        realm.where(com.scally_p.themoviedb.data.model.Result::class.java)
+                        realm.where(Genre::class.java)
                             .findAll()
                             ?.deleteAllFromRealm()
                     }
