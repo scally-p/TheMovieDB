@@ -1,9 +1,12 @@
 package com.scally_p.themoviedb.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -14,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.scally_p.themoviedb.R
 import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.databinding.ActivityMainBinding
 import com.scally_p.themoviedb.ui.details.DetailsActivity
@@ -25,10 +29,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
+class MainActivity : AppCompatActivity(), View.OnClickListener,
+    SwipeRefreshLayout.OnRefreshListener,
     MovieAdapter.OnAdapterViewClick {
 
     private val tag: String = MainActivity::class.java.name
+
+    private lateinit var inputMethodManager: InputMethodManager
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MoviesViewModel
@@ -41,10 +48,23 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
         viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
 
         prepareViews()
         prepareData()
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.search -> {
+                showSearchView()
+            }
+            R.id.clear -> {
+                hideSearchView()
+            }
+        }
     }
 
     override fun onResume() {
@@ -68,6 +88,8 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
     override fun onMovieItemClick(result: Result, imageView: ImageView) {
         imageView.transitionName = result.id.toString()
 
+        hideSearchView()
+
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra(Constants.General.ID, result.id)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -79,6 +101,8 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
     }
 
     private fun prepareViews() {
+        binding.search.setOnClickListener(this)
+        binding.clear.setOnClickListener(this)
         binding.swipeRefreshLayout.setOnRefreshListener(this)
 
         movieAdapter = MovieAdapter(this)
@@ -106,6 +130,24 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
                     Log.d(tag, "RecyclerViewOverScrollListener - onTopOverScroll")
                 }
             })
+    }
+
+    private fun showSearchView() {
+        inputMethodManager.toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
+        binding.searchTxt.requestFocus()
+
+        binding.searchLayout.isVisible = true
+    }
+
+    private fun hideSearchView() {
+        inputMethodManager.hideSoftInputFromWindow(binding.searchTxt.windowToken, 0)
+        binding.searchTxt.setText("")
+        binding.searchTxt.clearFocus()
+
+        binding.searchLayout.isVisible = false
     }
 
     private fun prepareData() {
