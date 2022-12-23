@@ -1,10 +1,10 @@
 package com.scally_p.themoviedb.extension
 
-fun List<Boolean>.hasFailure(): Boolean {
+fun List<Pair<Boolean, String?>>.failure(): Pair<Boolean, String?>? {
     for (t in this) {
-        if (!t) {
-            return false
+        if (!t.first) {
+            return t
         }
     }
-    return true
+    return null
 }

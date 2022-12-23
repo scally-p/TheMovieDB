@@ -17,7 +17,7 @@
         android:theme="@style/Theme.TheMovieDB"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.launcher.LauncherActivity"
             android:exported="true"
             android:theme="@style/Theme.TheMovieDB.Launcher">
             <intent-filter>
@@ -30,6 +30,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.details.DetailsActivity" />
     </application>
 

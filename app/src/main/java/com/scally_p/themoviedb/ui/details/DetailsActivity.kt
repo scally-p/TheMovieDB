@@ -58,7 +58,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
     }
 
     override fun onRefresh() {
-        viewModel.getDetails()
+        viewModel.fetchDetails()
     }
 
     private fun prepareViews() {
@@ -105,7 +105,6 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
             binding.duration.text = details.runtime.toDuration()
             binding.overview.text = details.overview ?: ""
             binding.homepage.text = details.homepage ?: ""
-            ImageUtils.setGlideImage(binding.root, binding.backdrop, Constants.Urls.IMAGE + "w500" + details.poster_path)
 
             Glide.with(binding.root)
                 .load(Constants.Urls.IMAGE + "w500" + details.poster_path)
@@ -135,6 +134,11 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
                 .into(binding.poster2)
         }
 
+        viewModel.observePostersLiveData().observe(this) { posters ->
+            ImageUtils.setGlideImage(binding.root, binding.backdrop, Constants.Urls.IMAGE + "w500" + posters.filter { it.file_path != viewModel.getDetails()?.poster_path }[0].file_path)
+            ImageUtils.setGlideImage(binding.root, binding.poster1, Constants.Urls.IMAGE + "w500" + posters.filter { it.file_path != viewModel.getDetails()?.poster_path }[1].file_path)
+        }
+
         viewModel.observeErrorMessage().observe(this) { message ->
             Log.d(tag, message)
         }
@@ -149,6 +153,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
 
         viewModel.setId(intent.getIntExtra(Constants.General.ID, 0))
         viewModel.setDetails()
-        viewModel.getDetails()
+        viewModel.fetchDetails()
+        viewModel.fetchImages()
     }
 }

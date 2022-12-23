@@ -9,7 +9,10 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.scally_p.themoviedb.data.model.movies.Result
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     override fun onRefresh() {
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.getUpcomingMovies(1)
+            viewModel.fetchUpcomingMovies(1)
         }
     }
 
@@ -105,8 +108,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
         }
 
         viewModel.setUpcomingMovies()
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.getUpcomingMovies(1)
-        }
+        viewModel.fetchUpcomingMovies(1)
     }
 }

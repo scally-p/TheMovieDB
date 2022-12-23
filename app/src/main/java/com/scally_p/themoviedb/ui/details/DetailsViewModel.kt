@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.scally_p.themoviedb.data.local.repository.DetailsRepository
+import com.scally_p.themoviedb.data.local.repository.ImagesRepository
 import com.scally_p.themoviedb.data.local.repository.MoviesRepository
 import com.scally_p.themoviedb.data.model.details.Details
+import com.scally_p.themoviedb.data.model.images.Poster
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 
@@ -15,8 +17,10 @@ class DetailsViewModel : ViewModel(), KoinComponent {
 
     private val moviesRepository = MoviesRepository()
     private val detailsRepository = DetailsRepository()
+    private val imagesRepository = ImagesRepository()
 
     private val detailsLiveData = MutableLiveData<Details>()
+    private val postersLiveData = MutableLiveData<List<Poster>>()
     private val errorMessage = MutableLiveData<String>()
     private val loading = MutableLiveData<Boolean>()
 
@@ -54,7 +58,15 @@ class DetailsViewModel : ViewModel(), KoinComponent {
         detailsLiveData.value = details!!
     }
 
-    fun getDetails() {
+    fun getDetails(): Details? {
+        return detailsLiveData.value
+    }
+
+    private fun setPosters() {
+        postersLiveData.value = imagesRepository.getPosters(id ?: 0)
+    }
+
+    fun fetchDetails() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = detailsRepository.fetchDetails(id ?: 0)
             withContext(Dispatchers.Main) {
@@ -63,6 +75,22 @@ class DetailsViewModel : ViewModel(), KoinComponent {
                     setDetails()
                     loading.value = false
                 } else {
+                    Log.d(tag, "Error : ${response.message()} ")
+                    onError("Error : ${response.message()} ")
+                }
+            }
+        }
+    }
+
+    fun fetchImages() {
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = imagesRepository.fetchImages(id ?: 0)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    imagesRepository.saveImages(response.body()?.posters ?: ArrayList(), id ?: 0)
+                    setPosters()
+                } else {
+                    Log.d(tag, "Error : ${response.message()} ")
                     onError("Error : ${response.message()} ")
                 }
             }
@@ -71,6 +99,10 @@ class DetailsViewModel : ViewModel(), KoinComponent {
 
     fun observeDetailsLiveData(): MutableLiveData<Details> {
         return detailsLiveData
+    }
+
+    fun observePostersLiveData(): MutableLiveData<List<Poster>> {
+        return postersLiveData
     }
 
     fun observeErrorMessage(): MutableLiveData<String> {

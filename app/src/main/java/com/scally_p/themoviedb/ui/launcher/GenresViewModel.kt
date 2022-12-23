@@ -1,20 +1,20 @@
-package com.scally_p.themoviedb.ui.main
+package com.scally_p.themoviedb.ui.launcher
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.scally_p.themoviedb.data.model.movies.Result
-import com.scally_p.themoviedb.data.local.repository.MoviesRepository
+import com.scally_p.themoviedb.data.local.repository.GenresRepository
+import com.scally_p.themoviedb.data.model.genres.Genre
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 
-class MoviesViewModel : ViewModel(), KoinComponent {
+class GenresViewModel : ViewModel(), KoinComponent {
 
-    private val tag: String = MoviesViewModel::class.java.name
+    private val tag: String = GenresViewModel::class.java.name
 
-    private val moviesRepository = MoviesRepository()
+    private val genresRepository = GenresRepository()
 
-    private val moviesLiveData = MutableLiveData<List<Result>>()
+    private val genresLiveData = MutableLiveData<List<Genre>>()
     private val errorMessage = MutableLiveData<String>()
     private val loading = MutableLiveData<Boolean>()
 
@@ -24,21 +24,22 @@ class MoviesViewModel : ViewModel(), KoinComponent {
         onError("Exception handled: ${throwable.localizedMessage}")
     }
 
-    fun setUpcomingMovies() {
-        moviesLiveData.value = moviesRepository.getMovies()
-        Log.d(tag, "setUpcomingMovies - movies size: ${moviesLiveData.value?.size ?: 0}")
+    fun setGenres() {
+        genresLiveData.value = genresRepository.getGenres()
     }
 
-    fun fetchUpcomingMovies(page: Int) {
+    fun getGenres(): List<Genre> {
+        setGenres()
+        return genresLiveData.value ?: ArrayList()
+    }
+
+    fun fetchGenres() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = moviesRepository.fetchUpcomingMovies(page)
+            val response = genresRepository.fetchGenres()
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-                    moviesRepository.saveUpcomingMovies(
-                        response.body()?.results ?: ArrayList(),
-                        page
-                    )
-                    setUpcomingMovies()
+                    genresRepository.saveGenres(response.body()?.genres ?: ArrayList())
+//                    setGenres()
                     loading.value = false
                 } else {
                     Log.d(tag, "Error : ${response.message()} ")
@@ -48,8 +49,8 @@ class MoviesViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    fun observeMoviesLiveData(): MutableLiveData<List<Result>> {
-        return moviesLiveData
+    fun observeGenresLiveData(): MutableLiveData<List<Genre>> {
+        return genresLiveData
     }
 
     fun observeErrorMessage(): MutableLiveData<String> {
