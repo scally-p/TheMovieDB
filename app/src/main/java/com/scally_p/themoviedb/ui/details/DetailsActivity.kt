@@ -34,6 +34,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         supportPostponeEnterTransition()
 
@@ -57,7 +58,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.back -> {
-                finish()
+                onBackPressed()
             }
             R.id.homepage -> {
 
