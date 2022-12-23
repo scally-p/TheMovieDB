@@ -4,6 +4,7 @@ import android.util.Log
 import com.scally_p.themoviedb.data.api.RetrofitInstance
 import com.scally_p.themoviedb.data.local.db.MoviesDbHelper
 import com.scally_p.themoviedb.data.local.repository.interfaces.IMoviesRepository
+import com.scally_p.themoviedb.data.model.genres.Genre
 import com.scally_p.themoviedb.data.model.movies.Movies
 import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.util.Constants
@@ -34,7 +35,7 @@ class MoviesRepository : IMoviesRepository, KoinComponent {
         return moviesDbHelper.getMovies()
     }
 
-    override fun getMovieGenres(genres: RealmList<Int>?): String {
+    override fun getMovieGenresString(genres: RealmList<Int>?): String {
         val data = moviesDbHelper.getGenres(genres)
         val s = StringBuilder("")
         data.forEachIndexed { index, genre ->
@@ -44,6 +45,13 @@ class MoviesRepository : IMoviesRepository, KoinComponent {
         }
 
         return s.toString()
+    }
+
+    override fun getMovieGenresList(genres: RealmList<Int>?): RealmList<Genre> {
+        val data = moviesDbHelper.getGenres(genres)
+        val list: RealmList<Genre> = RealmList()
+        list.addAll(data)
+        return list
     }
 
     override fun getMovie(id: Int): Result? {

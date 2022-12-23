@@ -14,6 +14,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.scally_p.themoviedb.R
+import com.scally_p.themoviedb.data.local.repository.DetailsRepository
 import com.scally_p.themoviedb.databinding.ActivityDetailsBinding
 import com.scally_p.themoviedb.extension.get5StarRating
 import com.scally_p.themoviedb.extension.toDuration
@@ -29,6 +30,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
 
     private lateinit var binding: ActivityDetailsBinding
     private lateinit var viewModel: DetailsViewModel
+    private val detailsRepository = DetailsRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +97,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
                 details.vote_average.toString(),
                 details.vote_count.toString()
             )
-            binding.genre.text = "Action | Comedy | Family"
+            binding.genre.text = detailsRepository.getMovieGenresString(details.genres)
             binding.releaseDate.text = binding.root.resources.getString(
                 R.string.released_on,
                 Utils.formatDate(details.release_date.toString())

@@ -40,7 +40,7 @@ class DetailsViewModel : ViewModel(), KoinComponent {
                 val d = Details()
                 d.id = result.id
                 d.backdrop_path = result.backdrop_path
-//            d.genres = result.id
+                d.genres = moviesRepository.getMovieGenresList(result.genre_ids)
                 d.poster_path = result.poster_path
                 d.release_date = result.release_date
                 d.title = result.title

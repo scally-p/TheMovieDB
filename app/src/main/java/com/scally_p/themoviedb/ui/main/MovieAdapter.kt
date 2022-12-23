@@ -37,7 +37,7 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
             this.result = result
 
             binding.title.text = result.title
-            binding.genre.text = moviesRepository.getMovieGenres(result.genre_ids)
+            binding.genre.text = moviesRepository.getMovieGenresString(result.genre_ids)
             binding.releaseDate.text = binding.root.resources.getString(
                 R.string.released_on,
                 Utils.formatDate(result.release_date.toString())
