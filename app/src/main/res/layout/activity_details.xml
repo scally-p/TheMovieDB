@@ -107,33 +107,19 @@
                         android:layout_height="70dp"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/genre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="134dp"
-                        android:fontFamily="@font/open_sans_semi_bold"
-                        android:gravity="center"
-                        android:text="Action | Comedy | Family"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="17dp"
-                        app:layout_constraintBottom_toTopOf="@+id/ratingBar"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/anchor"
-                        app:layout_constraintVertical_chainStyle="packed" />
-
                     <RatingBar
                         android:id="@+id/ratingBar"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="124dp"
                         android:numStars="5"
                         android:rating="4"
                         android:theme="@style/Theme.RatingBar"
-                        app:layout_constraintBottom_toBottomOf="@+id/anchor"
-                        app:layout_constraintStart_toStartOf="@+id/genre"
-                        app:layout_constraintTop_toBottomOf="@+id/genre" />
+                        app:layout_constraintBottom_toTopOf="@+id/releaseDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/anchor"
+                        app:layout_constraintVertical_chainStyle="packed" />
 
                     <TextView
                         android:id="@+id/rating"
@@ -150,6 +136,20 @@
                         app:layout_constraintTop_toTopOf="@+id/ratingBar" />
 
                     <TextView
+                        android:id="@+id/releaseDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:fontFamily="@font/open_sans_regular"
+                        android:text="Released on 12.01.2022"
+                        android:textColor="@color/white"
+                        android:textSize="11dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/anchor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/ratingBar"
+                        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+                    <TextView
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -162,17 +162,19 @@
                         android:textColor="@color/colorAccent"
                         android:textSize="20dp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+                        app:layout_constraintTop_toBottomOf="@+id/releaseDate" />
 
                     <TextView
-                        android:id="@+id/releaseDate"
+                        android:id="@+id/genre"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/open_sans_regular"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/open_sans_semi_bold"
                         android:gravity="center"
-                        android:text="Released on 12.01.2022"
-                        android:textColor="@color/white"
-                        android:textSize="11dp"
+                        android:text="Action | Comedy | Family"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16dp"
                         app:layout_constraintTop_toBottomOf="@+id/title" />
 
                     <TextView
@@ -184,7 +186,7 @@
                         android:text="1h 40min"
                         android:textColor="@color/white"
                         android:textSize="11dp"
-                        app:layout_constraintTop_toBottomOf="@+id/releaseDate" />
+                        app:layout_constraintTop_toBottomOf="@+id/genre" />
 
                     <ImageView
                         android:id="@+id/poster2"
