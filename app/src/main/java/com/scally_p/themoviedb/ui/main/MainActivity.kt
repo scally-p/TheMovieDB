@@ -16,6 +16,9 @@ import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.databinding.ActivityMainBinding
 import com.scally_p.themoviedb.ui.details.DetailsActivity
 import com.scally_p.themoviedb.util.Constants
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
@@ -52,7 +55,9 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
     }
 
     override fun onRefresh() {
-        viewModel.getUpcomingMovies(1)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getUpcomingMovies(1)
+        }
     }
 
     override fun onMovieItemClick(result: Result, imageView: ImageView) {
@@ -100,6 +105,8 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
         }
 
         viewModel.setUpcomingMovies()
-        viewModel.getUpcomingMovies(1)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getUpcomingMovies(1)
+        }
     }
 }

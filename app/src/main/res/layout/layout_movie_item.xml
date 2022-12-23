@@ -46,6 +46,7 @@
                 android:text="Action | Comedy | Family"
                 android:textColor="@color/white"
                 android:textSize="11dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 

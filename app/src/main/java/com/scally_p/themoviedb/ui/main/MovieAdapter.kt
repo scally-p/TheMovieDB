@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.scally_p.themoviedb.*
+import com.scally_p.themoviedb.data.local.repository.MoviesRepository
 import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.databinding.LayoutMovieItemBinding
 import com.scally_p.themoviedb.extension.get5StarRating
@@ -21,6 +21,7 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
     private val tag: String = MovieAdapter::class.java.name
 
     private var movieList = ArrayList<Result>()
+    private val moviesRepository = MoviesRepository()
 
     fun setMovieList(movieList: List<Result>) {
         this.movieList = movieList as ArrayList<Result>
@@ -36,7 +37,7 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
             this.result = result
 
             binding.title.text = result.title
-            binding.genre.text = "Action | Comedy | Family"
+            binding.genre.text = moviesRepository.getMovieGenres(result.genre_ids)
             binding.releaseDate.text = binding.root.resources.getString(
                 R.string.released_on,
                 Utils.formatDate(result.release_date.toString())

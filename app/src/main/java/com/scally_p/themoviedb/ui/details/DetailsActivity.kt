@@ -44,17 +44,6 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
         prepareData()
     }
 
-    override fun onResume() {
-        super.onResume()
-//        if (movieAdapter.itemCount > 0) binding.shimmerFrameLayout.isVisible = true
-//        binding.shimmerFrameLayout.startShimmer()
-    }
-
-    override fun onPause() {
-//        binding.shimmerFrameLayout.stopShimmer()
-        super.onPause()
-    }
-
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.back -> {
@@ -112,8 +101,8 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
                 Utils.formatDate(details.release_date.toString())
             )
             binding.duration.text = details.runtime.toDuration()
-            binding.overview.text = details.overview
-            binding.homepage.text = details.homepage
+            binding.overview.text = details.overview ?: ""
+            binding.homepage.text = details.homepage ?: ""
             ImageUtils.setGlideImage(binding.root, binding.backdrop, Constants.Urls.IMAGE + "w500" + details.poster_path)
 
             Glide.with(binding.root)
@@ -150,12 +139,8 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
 
         viewModel.observeLoading().observe(this) { loading ->
             if (loading) {
-//                if (movieAdapter.itemCount > 0) binding.shimmerFrameLayout.isVisible = true
-//                binding.shimmerFrameLayout.startShimmer()
                 binding.swipeRefreshLayout.isRefreshing = false
             } else {
-//                binding.shimmerFrameLayout.stopShimmer()
-//                binding.shimmerFrameLayout.isVisible = false
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
