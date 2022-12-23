@@ -4,7 +4,7 @@
     <string name="lorem_ipsium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nisl nisl, eleifend bibendum eleifend sagittis, commodo in enim. Integer ornare nec libero sed cursus. Praesent ultricies ac erat sit amet maximus. Quisque consequat enim eget arcu malesuada maximus. Phasellus semper maximus vestibulum. Vivamus nec odio eget tortor rhoncus tincidunt. Ut auctor eu est non posuere. Curabitur risus justo, malesuada a lorem vel, pharetra varius urna.
     </string>
 
-    <string name="released_on">Released on %s</string>
+    <string name="release_date">Release date: %s</string>
     <string name="rating">%1$s | %2$s votes</string>
 
 </resources>

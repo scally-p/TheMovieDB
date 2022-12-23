@@ -99,7 +99,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
             )
             binding.genre.text = detailsRepository.getMovieGenresString(details.genres)
             binding.releaseDate.text = binding.root.resources.getString(
-                R.string.released_on,
+                R.string.release_date,
                 Utils.formatDate(details.release_date.toString())
             )
             binding.duration.text = details.runtime.toDuration()

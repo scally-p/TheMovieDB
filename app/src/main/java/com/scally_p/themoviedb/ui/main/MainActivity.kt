@@ -2,6 +2,7 @@ package com.scally_p.themoviedb.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,15 +10,15 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.databinding.ActivityMainBinding
 import com.scally_p.themoviedb.ui.details.DetailsActivity
+import com.scally_p.themoviedb.ui.main.adapter.LockableLinearLayoutManager
+import com.scally_p.themoviedb.ui.main.adapter.MovieAdapter
 import com.scally_p.themoviedb.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +60,8 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     override fun onRefresh() {
         CoroutineScope(Dispatchers.IO).launch {
-            viewModel.fetchUpcomingMovies(1)
+            viewModel.currentPage = 1
+            viewModel.fetchUpcomingMovies()
         }
     }
 
@@ -81,9 +83,29 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
         movieAdapter = MovieAdapter(this)
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LockableLinearLayoutManager(this@MainActivity)
             adapter = movieAdapter
         }
+        (binding.recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        (binding.recyclerView.layoutManager as LockableLinearLayoutManager).setRecyclerViewOverScrollListener(
+            object : LockableLinearLayoutManager.OverScrollListener {
+                override fun onBottomOverScroll() {
+                    Log.d(tag, "RecyclerViewOverScrollListener - onBottomOverScroll")
+                    if (!movieAdapter.footerLoading) {
+                        movieAdapter.addFooterLoader()
+                        binding.recyclerView.post {
+                            movieAdapter.notifyItemInserted(viewModel.getUpcomingMovies().lastIndex)
+                        }
+
+                        viewModel.currentPage = viewModel.currentPage + 1
+                        viewModel.fetchUpcomingMovies()
+                    }
+                }
+
+                override fun onTopOverScroll() {
+                    Log.d(tag, "RecyclerViewOverScrollListener - onTopOverScroll")
+                }
+            })
     }
 
     private fun prepareData() {
@@ -108,6 +130,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
         }
 
         viewModel.setUpcomingMovies()
-        viewModel.fetchUpcomingMovies(1)
+        viewModel.fetchUpcomingMovies()
     }
 }

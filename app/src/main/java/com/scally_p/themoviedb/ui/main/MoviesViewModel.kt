@@ -17,6 +17,7 @@ class MoviesViewModel : ViewModel(), KoinComponent {
     private val moviesLiveData = MutableLiveData<List<Result>>()
     private val errorMessage = MutableLiveData<String>()
     private val loading = MutableLiveData<Boolean>()
+    private var page = 1
 
     private var job: Job? = null
 
@@ -24,19 +25,30 @@ class MoviesViewModel : ViewModel(), KoinComponent {
         onError("Exception handled: ${throwable.localizedMessage}")
     }
 
+    var currentPage: Int
+        get() {
+            return page
+        }
+        set(value) {
+            page = value
+        }
+
     fun setUpcomingMovies() {
         moviesLiveData.value = moviesRepository.getMovies()
         Log.d(tag, "setUpcomingMovies - movies size: ${moviesLiveData.value?.size ?: 0}")
     }
 
-    fun fetchUpcomingMovies(page: Int) {
+    fun getUpcomingMovies(): List<Result> {
+        return moviesLiveData.value ?: ArrayList()
+    }
+
+    fun fetchUpcomingMovies() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = moviesRepository.fetchUpcomingMovies(page)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     moviesRepository.saveUpcomingMovies(
-                        response.body()?.results ?: ArrayList(),
-                        page
+                        response.body()?.results ?: ArrayList(), page
                     )
                     setUpcomingMovies()
                     loading.value = false

@@ -27,7 +27,7 @@ class MoviesRepository : IMoviesRepository, KoinComponent {
         results: List<Result>,
         page: Int
     ) {
-        if (page > 1) moviesDbHelper.deleteMovies()
+        if (page == 1) moviesDbHelper.deleteMovies()
         return moviesDbHelper.saveMovies(results)
     }
 
