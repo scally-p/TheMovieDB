@@ -23,6 +23,7 @@ import com.scally_p.themoviedb.databinding.ActivityMainBinding
 import com.scally_p.themoviedb.ui.details.DetailsActivity
 import com.scally_p.themoviedb.ui.main.adapter.LockableLinearLayoutManager
 import com.scally_p.themoviedb.ui.main.adapter.MovieAdapter
+import com.scally_p.themoviedb.ui.main.adapter.SearchAdapter
 import com.scally_p.themoviedb.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener,
-    MovieAdapter.OnAdapterViewClick {
+    MovieAdapter.OnAdapterViewClick, SearchAdapter.OnSearchAdapterViewClick {
 
     private val tag: String = MainActivity::class.java.name
 
@@ -86,18 +87,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onMovieItemClick(result: Result, imageView: ImageView) {
-        imageView.transitionName = result.id.toString()
+        initMovieDetails(result, imageView)
+    }
 
-        hideSearchView()
-
-        val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra(Constants.General.ID, result.id)
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            this,
-            imageView,
-            ViewCompat.getTransitionName(imageView)!!
-        )
-        startActivity(intent, options.toBundle())
+    override fun onSearchMovieItemClick(result: Result, imageView: ImageView) {
+        initMovieDetails(result, imageView)
     }
 
     private fun prepareViews() {
@@ -130,6 +124,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                     Log.d(tag, "RecyclerViewOverScrollListener - onTopOverScroll")
                 }
             })
+
+        binding.searchTxt.threshold = 1
     }
 
     private fun showSearchView() {
@@ -153,6 +149,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
     private fun prepareData() {
         viewModel.observeMoviesLiveData().observe(this) { movieList ->
             movieAdapter.setMovieList(movieList)
+            binding.searchTxt.setAdapter(
+                SearchAdapter(
+                    this,
+                    R.layout.layout_movie_item_search,
+                    viewModel.getUpcomingMovies(),
+                    this
+                )
+            )
+
         }
 
         viewModel.observeErrorMessage().observe(this) { message ->
@@ -173,5 +178,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
 
         viewModel.setUpcomingMovies()
         viewModel.fetchUpcomingMovies()
+    }
+
+    private fun initMovieDetails(result: Result, imageView: ImageView) {
+        imageView.transitionName = result.id.toString()
+
+        hideSearchView()
+
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(Constants.General.ID, result.id)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this,
+            imageView,
+            ViewCompat.getTransitionName(imageView)!!
+        )
+        startActivity(intent, options.toBundle())
     }
 }

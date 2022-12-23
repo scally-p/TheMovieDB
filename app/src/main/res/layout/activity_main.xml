@@ -58,7 +58,7 @@
                     app:layout_constraintStart_toStartOf="parent">
 
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/searchTxt"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
