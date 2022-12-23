@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryLight">#253a52</color>
+    <color name="colorPrimary">#0d253f</color>
+    <color name="colorSecondary">#01b4e4</color>
+    <color name="colorAccent">#90cea1</color>
+
+    //transparency
+    <!--100% — FF-->
+    <!--95% — F2-->
+    <!--90% — E6-->
+    <!--85% — D9-->
+    <!--80% — CC-->
+    <!--75% — BF-->
+    <!--70% — B3-->
+    <!--65% — A6-->
+    <!--60% — 99-->
+    <!--55% — 8C-->
+    <!--50% — 80-->
+    <!--45% — 73-->
+    <!--40% — 66-->
+    <!--35% — 59-->
+    <!--30% — 4D-->
+    <!--25% — 40-->
+    <!--20% — 33-->
+    <!--15% — 26-->
+    <!--10% — 1A-->
+    <!--5% — 0D-->
+    <!--0% — 00-->
+
+    <color name="transparent">#00000000</color>
+    <color name="trans_black_05">#0d000000</color>
+    <color name="trans_black_10">#1a000000</color>
+    <color name="trans_black_15">#26000000</color>
+    <color name="trans_black_20">#33000000</color>
+    <color name="trans_black_25">#40000000</color>
+    <color name="trans_black_30">#4D000000</color>
+    <color name="trans_black_35">#59000000</color>
+    <color name="trans_black_40">#66000000</color>
+    <color name="trans_black_45">#73000000</color>
+    <color name="trans_black_50">#80000000</color>
+    <color name="trans_black_55">#8c000000</color>
+    <color name="trans_black_60">#99000000</color>
+    <color name="trans_black_65">#a6000000</color>
+    <color name="trans_black_70">#b3000000</color>
+    <color name="trans_black_75">#bf000000</color>
+    <color name="trans_black_80">#cc000000</color>
+    <color name="trans_black_85">#d9000000</color>
+    <color name="trans_black_90">#e6000000</color>
+    <color name="trans_black_95">#f2000000</color>
+    <color name="trans_white_05">#0dffffff</color>
+    <color name="trans_white_10">#1affffff</color>
+    <color name="trans_white_15">#26ffffff</color>
+    <color name="trans_white_20">#33ffffff</color>
+    <color name="trans_white_25">#40ffffff</color>
+    <color name="trans_white_30">#4Dffffff</color>
+    <color name="trans_white_35">#59ffffff</color>
+    <color name="trans_white_40">#66ffffff</color>
+    <color name="trans_white_45">#73ffffff</color>
+    <color name="trans_white_50">#80ffffff</color>
+    <color name="trans_white_55">#8cffffff</color>
+    <color name="trans_white_60">#99ffffff</color>
+    <color name="trans_white_65">#a6ffffff</color>
+    <color name="trans_white_70">#b3ffffff</color>
+    <color name="trans_white_75">#bfffffff</color>
+    <color name="trans_white_80">#ccffffff</color>
+    <color name="trans_white_85">#d9ffffff</color>
+    <color name="trans_white_90">#e6ffffff</color>
+    <color name="trans_white_95">#f2ffffff</color>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="aaaaaa">#aaaaaa</color>
+    <color name="bbbbbb">#bbbbbb</color>
+    <color name="cccccc">#cccccc</color>
+    <color name="dddddd">#dddddd</color>
+    <color name="eeeeee">#eeeeee</color>
+    <color name="d8d8d8">#d8d8d8</color>
+    <color name="f2f2f2">#f2f2f2</color>
+    <color name="f5f5f5">#f5f5f5</color>
+    <color name="f9f9f9">#f9f9f9</color>
+    <color name="fafafa">#fafafa</color>
+    <color name="ones">#111111</color>
+    <color name="twos">#222222</color>
+    <color name="threes">#333333</color>
+    <color name="fours">#444444</color>
+    <color name="fives">#555555</color>
+    <color name="sixs">#666666</color>
+    <color name="sevens">#777777</color>
+    <color name="eights">#888888</color>
+    <color name="nines">#999999</color>
+
+</resources>
