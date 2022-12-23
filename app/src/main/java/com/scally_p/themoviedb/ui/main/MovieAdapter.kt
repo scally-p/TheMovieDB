@@ -1,15 +1,18 @@
-package com.scally_p.themoviedb.ui
+package com.scally_p.themoviedb.ui.main
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.scally_p.themoviedb.*
-import com.scally_p.themoviedb.data.model.Result
+import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.databinding.LayoutMovieItemBinding
+import com.scally_p.themoviedb.extension.get5StarRating
 import com.scally_p.themoviedb.util.Constants
+import com.scally_p.themoviedb.util.ImageUtils
 import com.scally_p.themoviedb.util.Utils
 
 class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
@@ -46,17 +49,14 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
                 result.vote_average.toString(),
                 result.vote_count.toString()
             )
-
-            Glide.with(binding.root)
-                .load(Constants.Urls.IMAGE + "w500" + result.poster_path)
-                .into(binding.poster)
+            ImageUtils.setGlideImage(binding.root, binding.poster, Constants.Urls.IMAGE + "w500" + result.poster_path)
 
             binding.content.setOnClickListener(this)
         }
 
         override fun onClick(p0: View?) {
             when (p0!!.id) {
-                R.id.content -> onAdapterViewClick.onMovieItemClick(result!!)
+                R.id.content -> onAdapterViewClick.onMovieItemClick(result!!, binding.poster)
             }
         }
     }
@@ -80,6 +80,6 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
     }
 
     interface OnAdapterViewClick {
-        fun onMovieItemClick(result: Result)
+        fun onMovieItemClick(result: Result, imageView: ImageView)
     }
 }

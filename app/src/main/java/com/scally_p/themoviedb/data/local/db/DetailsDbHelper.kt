@@ -1,41 +1,37 @@
 package com.scally_p.themoviedb.data.local.db
 
-import com.scally_p.themoviedb.data.model.genres.Genre
+import com.scally_p.themoviedb.data.model.details.Details
 
-class GenresDbHelper {
+class DetailsDbHelper {
 
     @Synchronized
-    fun getGenres(): List<Genre> {
-        return RealmConfig.getRealm()
-            .use {
-                val data = it.where(Genre::class.java).findAll()
+    fun getDetails(id: Int): Details? {
+        return RealmConfig.getRealm().use {
+                val data = it.where(Details::class.java).equalTo("id", id).findFirst()
 
                 if (data != null && data.isValid) {
                     it.copyFromRealm(data)
                 } else {
-                    ArrayList()
+                    null
                 }
             }
     }
 
     @Synchronized
-    fun saveGenres(results: List<Genre>) {
-        RealmConfig.getRealm()
-            .use {
+    fun saveDetails(details: Details) {
+        RealmConfig.getRealm().use {
                 it.executeTransaction { realm ->
-                    realm.copyToRealmOrUpdate(results)
+                    realm.copyToRealmOrUpdate(details)
                 }
             }
     }
 
     @Synchronized
-    fun deleteGenres(): Boolean {
+    fun deleteDetails(id: Int): Boolean {
         return try {
-            RealmConfig.getRealm()
-                .use {
+            RealmConfig.getRealm().use {
                     it.executeTransaction { realm ->
-                        realm.where(Genre::class.java)
-                            .findAll()
+                        realm.where(Details::class.java).equalTo("id", id).findAll()
                             ?.deleteAllFromRealm()
                     }
                 }

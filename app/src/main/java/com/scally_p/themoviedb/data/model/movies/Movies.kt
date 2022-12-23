@@ -1,4 +1,4 @@
-package com.scally_p.themoviedb.data.model
+package com.scally_p.themoviedb.data.model.movies
 
 data class Movies(
     val dates: Dates? = null,

@@ -1,15 +1,21 @@
-package com.scally_p.themoviedb.ui
+package com.scally_p.themoviedb.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.scally_p.themoviedb.data.model.Result
+import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.databinding.ActivityMainBinding
+import com.scally_p.themoviedb.ui.details.DetailsActivity
+import com.scally_p.themoviedb.util.Constants
 
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
@@ -35,7 +41,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     override fun onResume() {
         super.onResume()
-        if (movieAdapter.itemCount > 0) binding.shimmerFrameLayout.isVisible = true
+        if (movieAdapter.itemCount == 0) binding.shimmerFrameLayout.isVisible = true
         binding.shimmerFrameLayout.startShimmer()
     }
 
@@ -48,18 +54,17 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
         viewModel.getUpcomingMovies(1)
     }
 
-    override fun onMovieItemClick(result: Result) {
-//        binding.one.poster.transitionName = "poster_transition"
-//
-//        binding.one.content.setOnClickListener {
-//        val intent = Intent(this, DetailsActivity::class.java)
-//        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//            this,
-//            binding.one.poster,
-//            ViewCompat.getTransitionName(binding.one.poster)!!
-//        )
-//        startActivity(intent, options.toBundle())
-//        }
+    override fun onMovieItemClick(result: Result, imageView: ImageView) {
+        imageView.transitionName = result.id.toString()
+
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(Constants.General.ID, result.id)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this,
+            imageView,
+            ViewCompat.getTransitionName(imageView)!!
+        )
+        startActivity(intent, options.toBundle())
     }
 
     private fun prepareViews() {
@@ -83,7 +88,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener,
 
         viewModel.observeLoading().observe(this) { loading ->
             if (loading) {
-                if (movieAdapter.itemCount > 0) binding.shimmerFrameLayout.isVisible = true
+                if (movieAdapter.itemCount == 0) binding.shimmerFrameLayout.isVisible = true
                 binding.shimmerFrameLayout.startShimmer()
                 binding.swipeRefreshLayout.isRefreshing = false
             } else {

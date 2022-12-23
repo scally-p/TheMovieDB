@@ -15,7 +15,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/trans_black_50" />
+        android:background="@color/trans_black_60" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -108,15 +108,15 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/title"
+                        android:id="@+id/genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="134dp"
-                        android:fontFamily="@font/open_sans_extra_bold"
-                        android:text="The Amazing Maurice"
+                        android:fontFamily="@font/open_sans_semi_bold"
+                        android:gravity="center"
+                        android:text="Action | Comedy | Family"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
+                        android:textSize="17dp"
                         app:layout_constraintBottom_toTopOf="@+id/ratingBar"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/anchor"
@@ -132,8 +132,8 @@
                         android:rating="4"
                         android:theme="@style/Theme.RatingBar"
                         app:layout_constraintBottom_toBottomOf="@+id/anchor"
-                        app:layout_constraintStart_toStartOf="@+id/title"
-                        app:layout_constraintTop_toBottomOf="@+id/title" />
+                        app:layout_constraintStart_toStartOf="@+id/genre"
+                        app:layout_constraintTop_toBottomOf="@+id/genre" />
 
                     <TextView
                         android:id="@+id/rating"
@@ -150,15 +150,18 @@
                         app:layout_constraintTop_toTopOf="@+id/ratingBar" />
 
                     <TextView
-                        android:id="@+id/genre"
+                        android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/open_sans_semi_bold"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/open_sans_extra_bold"
                         android:gravity="center"
-                        android:text="Action | Comedy | Family"
+                        android:text="The Amazing Maurice"
                         android:textColor="@color/colorAccent"
-                        android:textSize="17dp"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
                     <TextView
@@ -170,7 +173,7 @@
                         android:text="Released on 12.01.2022"
                         android:textColor="@color/white"
                         android:textSize="11dp"
-                        app:layout_constraintTop_toBottomOf="@+id/genre" />
+                        app:layout_constraintTop_toBottomOf="@+id/title" />
 
                     <TextView
                         android:id="@+id/duration"

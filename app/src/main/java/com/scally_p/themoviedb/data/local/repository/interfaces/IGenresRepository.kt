@@ -1,7 +1,7 @@
-package com.scally_p.themoviedb.data.local
+package com.scally_p.themoviedb.data.local.repository.interfaces
 
-import com.scally_p.themoviedb.data.model.Genre
-import com.scally_p.themoviedb.data.model.Genres
+import com.scally_p.themoviedb.data.model.genres.Genre
+import com.scally_p.themoviedb.data.model.genres.Genres
 import retrofit2.Response
 
 interface IGenresRepository {

@@ -1,9 +1,10 @@
-package com.scally_p.themoviedb.data.local
+package com.scally_p.themoviedb.data.local.repository
 
 import com.scally_p.themoviedb.data.api.RetrofitInstance
 import com.scally_p.themoviedb.data.local.db.GenresDbHelper
-import com.scally_p.themoviedb.data.model.Genre
-import com.scally_p.themoviedb.data.model.Genres
+import com.scally_p.themoviedb.data.local.repository.interfaces.IGenresRepository
+import com.scally_p.themoviedb.data.model.genres.Genre
+import com.scally_p.themoviedb.data.model.genres.Genres
 import com.scally_p.themoviedb.util.Constants
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

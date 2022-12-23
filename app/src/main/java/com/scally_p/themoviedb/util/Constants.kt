@@ -10,4 +10,8 @@ object Constants {
         const val SERVER = "https://api.themoviedb.org/3/"
         const val IMAGE = "https://image.tmdb.org/t/p/"
     }
+
+    object General {
+        const val ID = "id"
+    }
 }

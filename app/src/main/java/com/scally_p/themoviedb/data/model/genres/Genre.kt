@@ -1,4 +1,4 @@
-package com.scally_p.themoviedb.data.model
+package com.scally_p.themoviedb.data.model.genres
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

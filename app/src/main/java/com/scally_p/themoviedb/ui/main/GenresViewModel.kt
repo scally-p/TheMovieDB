@@ -1,10 +1,10 @@
-package com.scally_p.themoviedb.ui
+package com.scally_p.themoviedb.ui.main
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.scally_p.themoviedb.data.local.GenresRepository
-import com.scally_p.themoviedb.data.model.Genre
+import com.scally_p.themoviedb.data.local.repository.GenresRepository
+import com.scally_p.themoviedb.data.model.genres.Genre
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 
