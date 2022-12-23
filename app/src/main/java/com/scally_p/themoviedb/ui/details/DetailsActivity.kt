@@ -135,8 +135,23 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
         }
 
         viewModel.observePostersLiveData().observe(this) { posters ->
-            ImageUtils.setGlideImage(binding.root, binding.backdrop, Constants.Urls.IMAGE + "w500" + posters.filter { it.file_path != viewModel.getDetails()?.poster_path }[0].file_path)
-            ImageUtils.setGlideImage(binding.root, binding.poster1, Constants.Urls.IMAGE + "w500" + posters.filter { it.file_path != viewModel.getDetails()?.poster_path }[1].file_path)
+            val backdrop = posters.filter { it.file_path != viewModel.getDetails()?.poster_path }
+                .getOrNull(0)?.file_path ?: viewModel.getDetails()?.poster_path
+            val poster1 =
+                posters.filter { it.file_path != viewModel.getDetails()?.poster_path }
+                    .getOrNull(1)?.file_path
+                    ?: viewModel.getDetails()?.poster_path
+
+            ImageUtils.setGlideImage(
+                binding.root,
+                binding.backdrop,
+                Constants.Urls.IMAGE + "w500" + backdrop
+            )
+            ImageUtils.setGlideImage(
+                binding.root,
+                binding.poster1,
+                Constants.Urls.IMAGE + "w500" + poster1
+            )
         }
 
         viewModel.observeErrorMessage().observe(this) { message ->
