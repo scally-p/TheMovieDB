@@ -1,7 +1,7 @@
 # TheMovieDB
 
 <p align="center">
-  <img src="images/logo_the_movie_db" width="256px" height="64px"/>
+  <img src="images/logo_the_movie_db.svg" width="256px" height="64px"/>
 </p>
 
 A simple project using [TheMovieDb's](https://www.themoviedb.org/) API.
