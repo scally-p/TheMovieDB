@@ -52,7 +52,7 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener 
                 onBackPressed()
             }
             R.id.homepage -> {
-
+                Utils.launchChromeCustomTab(this, viewModel.getDetails()?.homepage ?: "")
             }
         }
     }
