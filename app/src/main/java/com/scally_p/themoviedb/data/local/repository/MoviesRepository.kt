@@ -1,17 +1,19 @@
 package com.scally_p.themoviedb.data.local.repository
 
 import android.util.Log
-import com.scally_p.themoviedb.data.api.RetrofitInstance
+import com.scally_p.themoviedb.data.api.RetrofitHelper
+import com.scally_p.themoviedb.data.network.NetworkHelper
 import com.scally_p.themoviedb.data.local.db.MoviesDbHelper
 import com.scally_p.themoviedb.data.local.repository.interfaces.IMoviesRepository
 import com.scally_p.themoviedb.data.model.genres.Genre
-import com.scally_p.themoviedb.data.model.movies.Movies
 import com.scally_p.themoviedb.data.model.movies.Result
+import com.scally_p.themoviedb.extension.exceptionOrNull
 import com.scally_p.themoviedb.util.Constants
 import io.realm.RealmList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import retrofit2.Response
 
 class MoviesRepository : IMoviesRepository, KoinComponent {
 
@@ -19,8 +21,20 @@ class MoviesRepository : IMoviesRepository, KoinComponent {
 
     private val moviesDbHelper by inject<MoviesDbHelper>()
 
-    override suspend fun fetchUpcomingMovies(page: Int): Response<Movies> {
-        return RetrofitInstance.api.upcomingMovies(Constants.Api.API_KEY, page)
+    override suspend fun fetchUpcomingMovies(page: Int): kotlin.Result<Boolean> {
+        val apiResponse = NetworkHelper.apiRequest {
+            RetrofitHelper.retrofitApiInstance.upcomingMovies(Constants.Api.API_KEY, page)
+        }
+
+        return withContext(Dispatchers.IO) {
+            val body = apiResponse.getOrNull()?.body()
+            if (apiResponse.isSuccess && body != null) {
+                saveUpcomingMovies(body.results ?: ArrayList(), page)
+                kotlin.Result.success(true)
+            } else {
+                kotlin.Result.failure(apiResponse.exceptionOrNull()!!)
+            }
+        }
     }
 
     override fun saveUpcomingMovies(

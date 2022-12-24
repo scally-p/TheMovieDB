@@ -12,11 +12,12 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.scally_p.themoviedb.R
-import com.scally_p.themoviedb.data.local.repository.MoviesRepository
 import com.scally_p.themoviedb.data.model.movies.Result
+import com.scally_p.themoviedb.ui.main.MoviesViewModel
 import com.scally_p.themoviedb.util.Constants
 import com.scally_p.themoviedb.util.ImageUtils
 import com.scally_p.themoviedb.util.Utils
+import org.koin.java.KoinJavaComponent
 
 class SearchAdapter(
     context: Context,
@@ -32,6 +33,7 @@ class SearchAdapter(
     Filterable {
 
     private var mResults: List<Result> = results
+    private val moviesViewModel: MoviesViewModel by KoinJavaComponent.inject(MoviesViewModel::class.java)
 
     override fun getCount(): Int {
         return mResults.size
@@ -50,7 +52,6 @@ class SearchAdapter(
             .inflate(layoutResource, parent, false) as ConstraintLayout
 
         val result = getItem(position)
-        val moviesRepository = MoviesRepository()
 
         val poster = view.findViewById<ImageView>(R.id.poster)
         val title = view.findViewById<TextView>(R.id.title)
@@ -58,7 +59,7 @@ class SearchAdapter(
         val releaseDate = view.findViewById<TextView>(R.id.releaseDate)
 
         title.text = result.title
-        genre.text = moviesRepository.getMovieGenresString(result.genre_ids)
+        genre.text = moviesViewModel.getMovieGenresString(result.genre_ids)
 
         releaseDate.text = context.resources.getString(
             R.string.release_date,

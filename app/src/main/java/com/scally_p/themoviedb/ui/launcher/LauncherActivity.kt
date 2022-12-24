@@ -5,27 +5,27 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.ViewModelProvider
 import com.scally_p.themoviedb.ui.details.DetailsActivity
 import com.scally_p.themoviedb.ui.main.MainActivity
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
 
-class LauncherActivity : AppCompatActivity() {
+class LauncherActivity : AppCompatActivity(), KoinComponent {
 
     private val tag: String = DetailsActivity::class.java.name
 
-    private lateinit var viewModel: GenresViewModel
     private var loading = true
+
+    private val viewModel: GenresViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[GenresViewModel::class.java]
-        loading = viewModel.getGenres().isEmpty()
+        loading = viewModel.genres.isEmpty()
 
         splashScreen.apply {
             setKeepOnScreenCondition {
-                Log.d(tag, "splashScreen - loading: $loading")
                 loading
             }
 
@@ -39,6 +39,10 @@ class LauncherActivity : AppCompatActivity() {
     }
 
     private fun prepareData() {
+        viewModel.observeErrorMessage().observe(this) { message ->
+            Log.d(tag, "<<<<< Error Message>>>>>\n$message")
+        }
+
         viewModel.observeLoading().observe(this) { loading ->
             this.loading = loading
         }

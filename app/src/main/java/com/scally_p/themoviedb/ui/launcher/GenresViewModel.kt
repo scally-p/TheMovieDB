@@ -1,56 +1,45 @@
 package com.scally_p.themoviedb.ui.launcher
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.scally_p.themoviedb.data.local.repository.GenresRepository
 import com.scally_p.themoviedb.data.model.genres.Genre
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class GenresViewModel : ViewModel(), KoinComponent {
 
-    private val tag: String = GenresViewModel::class.java.name
+    private val genresRepository by inject<GenresRepository>()
 
-    private val genresRepository = GenresRepository()
-
-    private val genresLiveData = MutableLiveData<List<Genre>>()
+    private var mGenres: List<Genre> = ArrayList()
     private val errorMessage = MutableLiveData<String>()
     private val loading = MutableLiveData<Boolean>()
 
     private var job: Job? = null
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
-    }
-
-    fun setGenres() {
-        genresLiveData.value = genresRepository.getGenres()
-    }
-
-    fun getGenres(): List<Genre> {
-        setGenres()
-        return genresLiveData.value ?: ArrayList()
-    }
+    var genres: List<Genre>
+        get() {
+            mGenres = genresRepository.getGenres()
+            return mGenres
+        }
+        set(genres) {
+            mGenres = genres
+        }
 
     fun fetchGenres() {
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = genresRepository.fetchGenres()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    genresRepository.saveGenres(response.body()?.genres ?: ArrayList())
-//                    setGenres()
-                    loading.value = false
-                } else {
-                    Log.d(tag, "Error : ${response.message()} ")
-                    onError("Error : ${response.message()} ")
-                }
+        viewModelScope.launch {
+            val result = genresRepository.fetchGenres()
+            if (result.isSuccess) {
+                loading.value = false
+            } else {
+                result.exceptionOrNull()?.printStackTrace()
+                onError(
+                    "Message: ${result.exceptionOrNull()?.message}\nLocalizedMessage: ${result.exceptionOrNull()?.localizedMessage}"
+                )
             }
         }
-    }
-
-    fun observeGenresLiveData(): MutableLiveData<List<Genre>> {
-        return genresLiveData
     }
 
     fun observeErrorMessage(): MutableLiveData<String> {

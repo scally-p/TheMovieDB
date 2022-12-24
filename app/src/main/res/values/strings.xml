@@ -7,5 +7,7 @@
     <string name="release_date">Release date: %s</string>
     <string name="rating">%1$s | %2$s votes</string>
     <string name="clear">clear</string>
+    <string name="overview">Overview</string>
+    <string name="homepage">Homepage</string>
 
 </resources>

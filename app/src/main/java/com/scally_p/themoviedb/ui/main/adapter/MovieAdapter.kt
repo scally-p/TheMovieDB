@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.edit
 import androidx.recyclerview.widget.RecyclerView
 import com.scally_p.themoviedb.*
-import com.scally_p.themoviedb.data.local.repository.MoviesRepository
 import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.databinding.LayoutMovieItemBinding
 import com.scally_p.themoviedb.databinding.LayoutMovieItemFooterLoaderBinding
 import com.scally_p.themoviedb.extension.get5StarRating
+import com.scally_p.themoviedb.ui.main.MoviesViewModel
 import com.scally_p.themoviedb.util.Constants
 import com.scally_p.themoviedb.util.ImageUtils
 import com.scally_p.themoviedb.util.Utils
+import org.koin.java.KoinJavaComponent
 
 class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,7 +23,8 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
     private val tag: String = MovieAdapter::class.java.name
 
     private var movieList = ArrayList<Result>()
-    private val moviesRepository = MoviesRepository()
+    private val moviesViewModel: MoviesViewModel by KoinJavaComponent.inject(MoviesViewModel::class.java)
+
     private var mFooterLoading: Boolean = false
 
     fun setMovieList(movieList: List<Result>) {
@@ -65,7 +66,7 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
             this.result = result
 
             binding.title.text = result.title
-            binding.genre.text = moviesRepository.getMovieGenresString(result.genre_ids)
+            binding.genre.text = moviesViewModel.getMovieGenresString(result.genre_ids)
             binding.releaseDate.text = binding.root.resources.getString(
                 R.string.release_date,
                 Utils.formatDate(result.release_date.toString())
@@ -75,7 +76,7 @@ class MovieAdapter(private var onAdapterViewClick: OnAdapterViewClick) :
 
             binding.rating.text = binding.root.resources.getString(
                 R.string.rating,
-                result.vote_average.toString(),
+                String.format("%.1f", result.vote_average ?: 0.0),
                 result.vote_count.toString()
             )
             ImageUtils.setGlideImage(

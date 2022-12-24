@@ -3,7 +3,6 @@ package com.scally_p.themoviedb.ui.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -13,8 +12,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.scally_p.themoviedb.R
@@ -28,19 +25,22 @@ import com.scally_p.themoviedb.util.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinComponent
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener,
-    MovieAdapter.OnAdapterViewClick, SearchAdapter.OnSearchAdapterViewClick {
+    MovieAdapter.OnAdapterViewClick, SearchAdapter.OnSearchAdapterViewClick, KoinComponent {
 
     private val tag: String = MainActivity::class.java.name
 
     private lateinit var inputMethodManager: InputMethodManager
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MoviesViewModel
     private lateinit var movieAdapter: MovieAdapter
+
+    private val viewModel: MoviesViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -50,8 +50,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
         setSupportActionBar(binding.toolbar)
 
         inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
 
         prepareViews()
         prepareData()
@@ -112,11 +110,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                     if (!movieAdapter.footerLoading) {
                         movieAdapter.addFooterLoader()
                         binding.recyclerView.post {
-                            movieAdapter.notifyItemInserted(viewModel.getUpcomingMovies().lastIndex)
+                            movieAdapter.notifyItemInserted(viewModel.upcomingMovies.lastIndex)
                         }
 
-                        viewModel.currentPage = viewModel.currentPage + 1
-                        viewModel.fetchUpcomingMovies()
+                        if (viewModel.currentPage < Constants.General.PAGE_LIMIT) {
+                            viewModel.currentPage = viewModel.currentPage + 1
+                            viewModel.fetchUpcomingMovies()
+                        }
                     }
                 }
 
@@ -153,11 +153,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                 SearchAdapter(
                     this,
                     R.layout.layout_movie_item_search,
-                    viewModel.getUpcomingMovies(),
+                    viewModel.upcomingMovies,
                     this
                 )
             )
 
+            if (movieAdapter.itemCount > 0) {
+                binding.shimmerFrameLayout.stopShimmer()
+                binding.shimmerFrameLayout.isVisible = false
+            }
         }
 
         viewModel.observeErrorMessage().observe(this) { message ->
@@ -170,13 +174,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                 binding.shimmerFrameLayout.startShimmer()
                 binding.swipeRefreshLayout.isRefreshing = false
             } else {
-                binding.shimmerFrameLayout.stopShimmer()
-                binding.shimmerFrameLayout.isVisible = false
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
 
-        viewModel.setUpcomingMovies()
+        viewModel.upcomingMovies = viewModel.movies
         viewModel.fetchUpcomingMovies()
     }
 

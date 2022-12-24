@@ -13,5 +13,6 @@ object Constants {
 
     object General {
         const val ID = "id"
+        const val PAGE_LIMIT = 500
     }
 }
