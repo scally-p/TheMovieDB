@@ -3,6 +3,7 @@ package com.scally_p.themoviedb.ui.details
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.scally_p.themoviedb.data.local.repository.DetailsRepository
 import com.scally_p.themoviedb.data.local.repository.ImagesRepository
 import com.scally_p.themoviedb.data.local.repository.MoviesRepository
@@ -27,10 +28,6 @@ class DetailsViewModel : ViewModel(), KoinComponent {
 
     private var id: Int? = null
     private var job: Job? = null
-
-    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
-    }
 
     fun setId(id: Int) {
         this.id = id
@@ -74,32 +71,30 @@ class DetailsViewModel : ViewModel(), KoinComponent {
         }
 
     fun fetchDetails() {
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = detailsRepository.fetchDetails(id ?: 0)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    detailsRepository.saveDetails(response.body() ?: Details())
-                    setDetails()
-                    loading.value = false
-                } else {
-                    Log.d(tag, "Error : ${response.message()} ")
-                    onError("Error : ${response.message()} ")
-                }
+        viewModelScope.launch {
+            val result = detailsRepository.fetchDetails(id ?: 0)
+            if (result.isSuccess) {
+                setDetails()
+                loading.value = false
+            } else {
+                result.exceptionOrNull()?.printStackTrace()
+                onError(
+                    "Message: ${result.exceptionOrNull()?.message}\nLocalizedMessage: ${result.exceptionOrNull()?.localizedMessage}"
+                )
             }
         }
     }
 
     fun fetchImages() {
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = imagesRepository.fetchImages(id ?: 0)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    imagesRepository.saveImages(response.body()?.posters ?: ArrayList(), id ?: 0)
-                    setPosters()
-                } else {
-                    Log.d(tag, "Error : ${response.message()} ")
-                    onError("Error : ${response.message()} ")
-                }
+        viewModelScope.launch {
+            val result = imagesRepository.fetchImages(id ?: 0)
+            if (result.isSuccess) {
+                setPosters()
+            } else {
+                result.exceptionOrNull()?.printStackTrace()
+                onError(
+                    "Message: ${result.exceptionOrNull()?.message}\nLocalizedMessage: ${result.exceptionOrNull()?.localizedMessage}"
+                )
             }
         }
     }

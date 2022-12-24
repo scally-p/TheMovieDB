@@ -3,6 +3,7 @@ package com.scally_p.themoviedb.ui.main
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.data.local.repository.MoviesRepository
 import io.realm.RealmList
@@ -22,10 +23,6 @@ class MoviesViewModel : ViewModel(), KoinComponent {
     private var page = 1
 
     private var job: Job? = null
-
-    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
-    }
 
     var currentPage: Int
         get() {
@@ -54,19 +51,16 @@ class MoviesViewModel : ViewModel(), KoinComponent {
     }
 
     fun fetchUpcomingMovies() {
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = moviesRepository.fetchUpcomingMovies(page)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    moviesRepository.saveUpcomingMovies(
-                        response.body()?.results ?: ArrayList(), page
-                    )
-                    upcomingMovies = moviesRepository.getMovies()
-                    loading.value = false
-                } else {
-                    Log.d(tag, "Error : ${response.message()} ")
-                    onError("Error : ${response.message()} ")
-                }
+        viewModelScope.launch {
+            val result = moviesRepository.fetchUpcomingMovies(page)
+            if (result.isSuccess) {
+                upcomingMovies = moviesRepository.getMovies()
+                loading.value = false
+            } else {
+                result.exceptionOrNull()?.printStackTrace()
+                onError(
+                    "Message: ${result.exceptionOrNull()?.message}\nLocalizedMessage: ${result.exceptionOrNull()?.localizedMessage}"
+                )
             }
         }
     }

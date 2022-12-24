@@ -26,7 +26,6 @@ class LauncherActivity : AppCompatActivity(), KoinComponent {
 
         splashScreen.apply {
             setKeepOnScreenCondition {
-                Log.d(tag, "splashScreen - loading: $loading")
                 loading
             }
 
@@ -40,6 +39,10 @@ class LauncherActivity : AppCompatActivity(), KoinComponent {
     }
 
     private fun prepareData() {
+        viewModel.observeErrorMessage().observe(this) { message ->
+            Log.d(tag, "<<<<< Error Message>>>>>\n$message")
+        }
+
         viewModel.observeLoading().observe(this) { loading ->
             this.loading = loading
         }
