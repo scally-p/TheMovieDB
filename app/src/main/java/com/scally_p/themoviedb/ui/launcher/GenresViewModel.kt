@@ -7,12 +7,13 @@ import com.scally_p.themoviedb.data.local.repository.GenresRepository
 import com.scally_p.themoviedb.data.model.genres.Genre
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class GenresViewModel : ViewModel(), KoinComponent {
 
     private val tag: String = GenresViewModel::class.java.name
 
-    private val genresRepository = GenresRepository()
+    private val genresRepository by inject<GenresRepository>()
 
     private val genresLiveData = MutableLiveData<List<Genre>>()
     private val errorMessage = MutableLiveData<String>()
@@ -24,14 +25,14 @@ class GenresViewModel : ViewModel(), KoinComponent {
         onError("Exception handled: ${throwable.localizedMessage}")
     }
 
-    fun setGenres() {
-        genresLiveData.value = genresRepository.getGenres()
-    }
-
-    fun getGenres(): List<Genre> {
-        setGenres()
-        return genresLiveData.value ?: ArrayList()
-    }
+    var genres: List<Genre>
+        get() {
+            genres = genresRepository.getGenres()
+            return genresLiveData.value ?: ArrayList()
+        }
+        set(genres) {
+            genresLiveData.value = genres
+        }
 
     fun fetchGenres() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
@@ -39,7 +40,6 @@ class GenresViewModel : ViewModel(), KoinComponent {
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     genresRepository.saveGenres(response.body()?.genres ?: ArrayList())
-//                    setGenres()
                     loading.value = false
                 } else {
                     Log.d(tag, "Error : ${response.message()} ")

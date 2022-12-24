@@ -10,14 +10,15 @@ import com.scally_p.themoviedb.data.model.details.Details
 import com.scally_p.themoviedb.data.model.images.Poster
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class DetailsViewModel : ViewModel(), KoinComponent {
 
     private val tag: String = DetailsViewModel::class.java.name
 
-    private val moviesRepository = MoviesRepository()
-    private val detailsRepository = DetailsRepository()
-    private val imagesRepository = ImagesRepository()
+    private val moviesRepository by inject<MoviesRepository>()
+    private val detailsRepository by inject<DetailsRepository>()
+    private val imagesRepository by inject<ImagesRepository>()
 
     private val detailsLiveData = MutableLiveData<Details>()
     private val postersLiveData = MutableLiveData<List<Poster>>()
@@ -58,13 +59,19 @@ class DetailsViewModel : ViewModel(), KoinComponent {
         detailsLiveData.value = details!!
     }
 
-    fun getDetails(): Details? {
-        return detailsLiveData.value
-    }
-
     private fun setPosters() {
         postersLiveData.value = imagesRepository.getPosters(id ?: 0)
     }
+
+    val details: Details?
+        get() {
+            return detailsLiveData.value
+        }
+
+    val movieGenres: String
+        get() {
+            return detailsRepository.getMovieGenresString(details?.genres)
+        }
 
     fun fetchDetails() {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {

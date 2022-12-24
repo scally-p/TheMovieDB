@@ -201,10 +201,10 @@
                         android:id="@+id/overviewLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="30dp"
                         android:fontFamily="@font/open_sans_semi_bold"
-                        android:text="Overview"
+                        android:text="@string/overview"
                         android:textColor="@color/colorAccent"
                         android:textSize="18dp"
                         android:textStyle="bold"
@@ -222,34 +222,34 @@
                         android:textSize="13dp"
                         app:layout_constraintTop_toBottomOf="@+id/overviewLabel" />
 
-                    <ImageView
-                        android:id="@+id/homepageIcon"
-                        android:layout_width="11dp"
+                    <TextView
+                        android:id="@+id/homepageLabel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_home"
-                        app:layout_constraintBottom_toBottomOf="@+id/homepage"
-                        app:layout_constraintEnd_toStartOf="@+id/homepage"
-                        app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/homepage" />
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/open_sans_semi_bold"
+                        android:text="@string/homepage"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@+id/overview" />
 
                     <TextView
                         android:id="@+id/homepage"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
                         android:fontFamily="@font/open_sans_semi_bold"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:paddingStart="4dp"
-                        android:paddingTop="14dp"
-                        android:paddingEnd="4dp"
-                        android:paddingBottom="14dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
                         android:text="https://www.google.com/movies"
                         android:textColor="@color/colorSecondary"
                         android:textSize="11dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/homepageIcon"
-                        app:layout_constraintTop_toBottomOf="@+id/overview" />
+                        app:layout_constraintTop_toBottomOf="@+id/homepageLabel" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -5,14 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.scally_p.themoviedb.data.model.movies.Result
 import com.scally_p.themoviedb.data.local.repository.MoviesRepository
+import io.realm.RealmList
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class MoviesViewModel : ViewModel(), KoinComponent {
 
     private val tag: String = MoviesViewModel::class.java.name
 
-    private val moviesRepository = MoviesRepository()
+    private val moviesRepository by inject<MoviesRepository>()
 
     private val moviesLiveData = MutableLiveData<List<Result>>()
     private val errorMessage = MutableLiveData<String>()
@@ -33,13 +35,22 @@ class MoviesViewModel : ViewModel(), KoinComponent {
             page = value
         }
 
-    fun setUpcomingMovies() {
-        moviesLiveData.value = moviesRepository.getMovies()
-        Log.d(tag, "setUpcomingMovies - movies size: ${moviesLiveData.value?.size ?: 0}")
-    }
+    val movies: List<Result>
+        get() {
+            return moviesRepository.getMovies()
+        }
 
-    fun getUpcomingMovies(): List<Result> {
-        return moviesLiveData.value ?: ArrayList()
+    var upcomingMovies: List<Result>
+        get() {
+            return moviesLiveData.value ?: ArrayList()
+        }
+        set(upcomingMovies) {
+            moviesLiveData.value = upcomingMovies
+            Log.d(tag, "setUpcomingMovies - movies size: ${moviesLiveData.value?.size ?: 0}")
+        }
+
+    fun getMovieGenresString(genres: RealmList<Int>?): String {
+        return moviesRepository.getMovieGenresString(genres)
     }
 
     fun fetchUpcomingMovies() {
@@ -50,7 +61,7 @@ class MoviesViewModel : ViewModel(), KoinComponent {
                     moviesRepository.saveUpcomingMovies(
                         response.body()?.results ?: ArrayList(), page
                     )
-                    setUpcomingMovies()
+                    upcomingMovies = moviesRepository.getMovies()
                     loading.value = false
                 } else {
                     Log.d(tag, "Error : ${response.message()} ")
