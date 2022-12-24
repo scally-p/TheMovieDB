@@ -102,6 +102,8 @@ class DetailsActivity : AppCompatActivity(), OnClickListener, OnRefreshListener,
             binding.duration.text = details.runtime.toDuration()
             binding.overview.text = details.overview ?: ""
             binding.homepage.text = details.homepage ?: ""
+            binding.homepageLabel.isVisible = details.homepage?.isNotEmpty() == true
+            binding.homepage.isVisible = details.homepage?.isNotEmpty() == true
 
             Glide.with(binding.root)
                 .load(Constants.Urls.IMAGE + "w500" + details.poster_path)
