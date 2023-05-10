@@ -17,9 +17,9 @@ Features include:
 </p>
 
 ### Home:
-<p align="left">
-  <img src="images/ss_home_1.png" width="23%"/>
-  <img src="images/ss_home_2.png" width="23%"/>
+<p align="center">
+  <img src="images/ss_home_1.png" width="25%"/>
+  <img src="images/ss_home_2.png" width="25%"/>
 </p>
 
 ### Search:
